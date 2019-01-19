@@ -1,35 +1,88 @@
+import "@babel/polyfill";
+
 import React from "react";
 import ReactDOM from "react-dom";
+import axios from "axios";
+
+import TextField from "@material-ui/core/TextField";
+import Button from "@material-ui/core/Button";
+import LinearProgress from "@material-ui/core/LinearProgress";
+
+const API_ENDPOINT = "https://script.google.com/~";
 
 class HelloReact extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      list: [{ index: 0, text: "リスト0" }, { index: 1, text: "リスト1" }, { index: 2, text: "リスト2" }],
-      inputText: ""
+      list: [],
+      inputText: "",
+      isLoading: false
     };
   }
   render() {
     var list = this.state.list.map(a => <li key={"list" + a.index.toString()}>{a.text}</li>);
     return (
       <div>
-        <h1>Hello React!!</h1>
-        <input type="text" value={this.state.inputText} placeholder="write a comment..." onChange={this.changeText.bind(this)} />
-        <button onClick={this.buttonPushed.bind(this)}>push me!</button>
+        <div style={{ minHeight: 6 }}>{this.state.isLoading && <LinearProgress variant="query" />}</div>
+
+        <TextField
+          className="text-field"
+          type="text"
+          label="Input your text"
+          value={this.state.inputText}
+          onChange={this.changeText.bind(this)}
+          variant="outlined"
+        />
+
+        <Button onClick={this.putData.bind(this)} variant="outlined" size="large" color="primary">
+          PUT
+        </Button>
+
+        <br />
+
+        <Button onClick={this.fetchData.bind(this)} variant="outlined" size="large" color="primary">
+          FETCH
+        </Button>
+
         <ol>{list}</ol>
       </div>
     );
   }
-  buttonPushed(e) {
-    this.state.list.push({
-      index: this.state.list.length,
-      text: this.state.inputText
-    });
-    this.setState(this.state);
+
+  async putData() {
+    const url = API_ENDPOINT + `?message=${this.state.inputText}`;
+
+    this.setState({ isLoading: true });
+    try {
+      await axios.get(url);
+    } finally {
+      this.setState({ isLoading: false });
+    }
   }
+
+  async fetchData() {
+    this.setState({ isLoading: true });
+    let response;
+    try {
+      response = await axios.get(API_ENDPOINT);
+    } finally {
+      this.setState({ isLoading: false });
+    }
+
+    const list = this.state.list.concat([]);
+    const data = response.data;
+    for (let i = 0; i < data.length; i++) {
+      list.push({
+        index: list.length,
+        text: data[i].message
+      });
+    }
+    this.setState({ list });
+  }
+
   changeText(e) {
-    this.state.inputText = e.target.value;
-    this.setState(this.state);
+    const inputText = e.target.value;
+    this.setState({ inputText });
   }
 }
 
