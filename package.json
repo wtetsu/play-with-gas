@@ -1,0 +1,28 @@
+{
+  "name": "play-with-gas",
+  "description": "Play with Google Apps Script",
+  "version": "1.0.0",
+  "repository": "https://github.com/wtetsu/play-with-gas.git",
+  "main": "index.js",
+  "license": "MIT",
+  "scripts": {
+    "build": "webpack --progress",
+    "watch": "webpack --watch",
+    "start": "webpack-serve",
+    "release": "NODE_ENV=production npm run build"
+  },
+  "dependencies": {
+    "react": "^16.7.0",
+    "react-dom": "^16.7.0"
+  },
+  "devDependencies": {
+    "@babel/core": "^7.2.2",
+    "@babel/preset-env": "^7.2.3",
+    "@babel/preset-react": "^7.0.0",
+    "babel-loader": "^8.0.5",
+    "copy-webpack-plugin": "^4.6.0",
+    "webpack": "^4.28.4",
+    "webpack-cli": "^3.2.1",
+    "webpack-serve": "^2.0.3"
+  }
+}
