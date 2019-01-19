@@ -4,7 +4,9 @@
 - Create and publish a .gs script
 - Call the API from a React application
 
-A server-side script example:
+## Server-side scripts
+
+Simple fetch/put.
 
 ```js
 function doGet(e) {
@@ -28,7 +30,6 @@ function fetchSheetDataJson() {
   return json;
 }
 
-
 function createJson(data) {
   const records = []
   const headers = data[0];
@@ -46,4 +47,26 @@ function createRecord(headers, values) {
   }
   return rec;
 }
+```
+
+## Front-end
+
+Normal build:
+```
+npm run build
+```
+
+Normal watch:
+```
+npm run watch
+```
+
+With webpack-serve:
+```
+npm run start
+```
+
+Release build:
+```
+npm run release
 ```
